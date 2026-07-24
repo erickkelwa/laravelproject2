@@ -22,6 +22,9 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 RUN npm install && npm run prod && rm -rf node_modules
 
+# Remove .env baked into image — Render injects env vars at runtime
+RUN rm -f /var/www/.env
+
 # Create log directories
 RUN mkdir -p /var/log/nginx /var/log/php-fpm /var/log/supervisor
 

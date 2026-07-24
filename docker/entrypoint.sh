@@ -21,7 +21,7 @@ mkdir -p /var/log/nginx /var/log/php-fpm /var/log/supervisor
 
 # Render provides $PORT — substitute it into nginx config
 export NGINX_PORT="${PORT:-10000}"
-envsubst '${NGINX_PORT}' < /etc/nginx/sites-available/default > /tmp/nginx_rendered.conf
+envsubst '${NGINX_PORT}' < /etc/nginx/sites-available/default > /tmp/nginx_rendered.conf  # Only substitute NGINX_PORT, not $uri/$query_string etc.
 cp /tmp/nginx_rendered.conf /etc/nginx/sites-available/default
 
 # Start supervisor (manages nginx + php-fpm)
