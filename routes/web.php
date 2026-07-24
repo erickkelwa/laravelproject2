@@ -7,6 +7,11 @@ use App\Http\Controllers\MpesaController;
 use App\Models\Student;
 use App\Models\Fee;
 
+// ── Health check for Render (no auth required) ──
+Route::get('/health', function () {
+    return response()->json(['status' => 'ok']);
+});
+
 // ── Root → redirect based on role ──
 Route::get('/', function () {
     if (auth()->check() && auth()->user()->role == 'student') {
