@@ -20,7 +20,7 @@ COPY . .
 
 # Install PHP and Node dependencies, build frontend
 RUN composer install --no-dev --optimize-autoloader --no-interaction
-RUN npm ci && npm run build && rm -rf node_modules
+RUN npm install && npm run build && rm -rf node_modules
 
 # Create log directories
 RUN mkdir -p /var/log/nginx /var/log/php-fpm /var/log/supervisor
