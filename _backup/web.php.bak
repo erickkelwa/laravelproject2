@@ -1,0 +1,57 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\AuthController;
+use App\Models\Student;
+
+// ── Redirect root to dashboard (auth middleware will redirect to login if needed) ──
+Route::get('/', function () {
+    return redirect()->route('dashboard');
+});
+
+// ── Auth Routes (guests only) ──
+Route::middleware('guest')->group(function () {
+    Route::get('/login',  [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+});
+
+// ── Logout (must be authenticated) ──
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+// ── Protected Routes (require login) ──
+Route::middleware('auth')->group(function () {
+
+    // Dashboard
+    Route::get('/dashboard', function () {
+        $totalStudents = Student::count();
+        $totalCourses  = Student::distinct('course')->count('course');
+        $latestStudent = Student::latest()->first();
+
+        // Recent 5 students for the activity table
+        $recentStudents = Student::latest()->take(5)->get();
+
+        // Per-course breakdown
+        $courseBreakdown = Student::selectRaw('course, COUNT(*) as total')
+            ->groupBy('course')
+            ->orderByDesc('total')
+            ->get();
+
+        // Students added this month
+        $newThisMonth = Student::whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->count();
+
+        return view('dashboard.index', compact(
+            'totalStudents',
+            'totalCourses',
+            'latestStudent',
+            'recentStudents',
+            'courseBreakdown',
+            'newThisMonth'
+        ));
+    })->name('dashboard');
+
+    // Students resource (CRUD)
+    Route::resource('students', StudentController::class);
+});

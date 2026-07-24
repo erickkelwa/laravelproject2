@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background-color: #0d6efd; z-index: 1050;">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="{{ route('dashboard') }}">
+            <i class="bi bi-mortarboard-fill me-2"></i>Student Dashboard
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+            aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+
+                {{-- Logged-in user dropdown --}}
+                @auth
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white d-flex align-items-center gap-2"
+                       href="#" id="userDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="bg-white text-primary rounded-circle d-inline-flex align-items-center justify-content-center fw-bold"
+                              style="width:32px;height:32px;font-size:0.85rem;">
+                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                        </span>
+                        <span class="d-none d-md-inline">{{ auth()->user()->name }}</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-1" aria-labelledby="userDropdown"
+                        style="min-width:200px; border-radius:12px;">
+                        <li>
+                            <div class="px-3 py-2 border-bottom">
+                                <div class="fw-semibold text-dark" style="font-size:0.9rem;">{{ auth()->user()->name }}</div>
+                                <div class="text-muted" style="font-size:0.78rem;">{{ auth()->user()->email }}</div>
+                            </div>
+                        </li>
+                        <li>
+                            <form method="POST" action="{{ route('logout') }}" id="logoutForm">
+                                @csrf
+                                <button type="submit" class="dropdown-item text-danger d-flex align-items-center gap-2 py-2">
+                                    <i class="bi bi-box-arrow-right"></i> Logout
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+                @endauth
+
+            </ul>
+        </div>
+    </div>
+</nav>
