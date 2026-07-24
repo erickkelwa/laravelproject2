@@ -12,8 +12,10 @@ services:
     plan: free
     region: oregon
     dockerfilePath: ./Dockerfile
-    healthCheckPath: /health
+    healthCheckPath: /
     envVars:
+      - key: PORT
+        value: "10000"
       - key: APP_NAME
         value: "Student Management System"
       - key: APP_ENV
