@@ -10,16 +10,14 @@ return new class extends Migration
     {
         Schema::table('fees', function (Blueprint $table) {
             // Term the payment belongs to: Term 1, Term 2, Term 3
-            $table->enum('term', ['Term 1', 'Term 2', 'Term 3'])
+            $table->string('term')
                   ->nullable()
-                  ->default('Term 1')
-                  ->after('student_id');
+                  ->default('Term 1');
 
             // Per-term fee target (how much is due for that term)
             $table->decimal('term_fee', 10, 2)
                   ->nullable()
-                  ->default(0)
-                  ->after('term');
+                  ->default(0);
         });
     }
 

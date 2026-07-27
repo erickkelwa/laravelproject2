@@ -14,7 +14,7 @@ class AddTotalFeeToStudentsTable extends Migration
     public function up()
     {
         Schema::table('students', function (Blueprint $table) {
-            $table->decimal('total_fee', 10, 2)->default(0)->after('course');
+            $table->decimal('total_fee', 10, 2)->default(0);
         });
     }
 

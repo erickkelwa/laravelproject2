@@ -10,7 +10,7 @@ return new class extends Migration
     {
         if (!Schema::hasColumn('staff', 'course')) {
             Schema::table('staff', function (Blueprint $table) {
-                $table->string('course')->nullable()->after('department');
+                $table->string('course')->nullable();
             });
         }
     }

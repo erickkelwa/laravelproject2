@@ -23,7 +23,12 @@ services:
       - key: APP_DEBUG
         value: false
       - key: APP_KEY
-        generateValue: true
+        # IMPORTANT: Set this manually in Render Dashboard > Environment
+        # Generate with: php artisan key:generate --show
+        # Format must be: base64:XXXXXXXXXXXXXXXXX
+        value: "base64:CHANGE_ME_ON_RENDER_DASHBOARD"
+      - key: LOG_CHANNEL
+        value: stderr
       - key: APP_URL
         # This will be automatically populated with your render URL if left empty, 
         # or you can set it after deployment.

@@ -17,7 +17,7 @@ class CreateAttendancesTable extends Migration
             $table->id();
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
             $table->date('date');
-            $table->enum('status', ['Present', 'Absent', 'Late', 'Excused']);
+            $table->string('status'); // Values: Present, Absent, Late, Excused
             $table->string('remarks')->nullable();
             $table->timestamps();
             

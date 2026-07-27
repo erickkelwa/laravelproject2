@@ -11,7 +11,7 @@ class Course extends Model
 
     protected $fillable = ['course_name'];
 
-    // A course has many students
+
     public function students()
     {
         return $this->hasMany(Student::class);

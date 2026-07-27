@@ -14,7 +14,7 @@ class AddTermToMpesaTransactionsTable extends Migration
     public function up()
     {
         Schema::table('mpesa_transactions', function (Blueprint $table) {
-            $table->string('term')->nullable()->after('status');
+            $table->string('term')->nullable();
         });
     }
 
