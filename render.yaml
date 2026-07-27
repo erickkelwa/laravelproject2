@@ -26,7 +26,7 @@ services:
         # IMPORTANT: Set this manually in Render Dashboard > Environment
         # Generate with: php artisan key:generate --show
         # Format must be: base64:XXXXXXXXXXXXXXXXX
-        value: "base64:CHANGE_ME_ON_RENDER_DASHBOARD"
+        value: "base64:85vGmPaqYFdPjrjODpJUeEtOkgIUkHiWJxw8E4pg1rE="
       - key: LOG_CHANNEL
         value: stderr
       - key: APP_URL
