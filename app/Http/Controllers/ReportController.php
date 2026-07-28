@@ -16,12 +16,22 @@ class ReportController extends Controller
     public function index()
     {
         // 1. Monthly Revenue Trend
-        $monthlyRevenue = Fee::selectRaw('YEAR(payment_date) as year, MONTH(payment_date) as month, SUM(amount) as total')
-            ->groupBy('year', 'month')
-            ->orderBy('year', 'asc')
-            ->orderBy('month', 'asc')
-            ->take(12)
-            ->get();
+        $isPgsql = DB::connection()->getDriverName() === 'pgsql';
+        if ($isPgsql) {
+            $monthlyRevenue = Fee::selectRaw('EXTRACT(YEAR FROM payment_date)::integer as year, EXTRACT(MONTH FROM payment_date)::integer as month, SUM(amount) as total')
+                ->groupBy(DB::raw('EXTRACT(YEAR FROM payment_date), EXTRACT(MONTH FROM payment_date)'))
+                ->orderBy(DB::raw('EXTRACT(YEAR FROM payment_date)'), 'asc')
+                ->orderBy(DB::raw('EXTRACT(MONTH FROM payment_date)'), 'asc')
+                ->take(12)
+                ->get();
+        } else {
+            $monthlyRevenue = Fee::selectRaw('YEAR(payment_date) as year, MONTH(payment_date) as month, SUM(amount) as total')
+                ->groupBy('year', 'month')
+                ->orderBy('year', 'asc')
+                ->orderBy('month', 'asc')
+                ->take(12)
+                ->get();
+        }
         
         // 2. Revenue by Course
         $revenueByCourse = DB::table('fees')
