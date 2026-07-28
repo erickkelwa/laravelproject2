@@ -97,8 +97,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
             ->take(6);
 
         $topPayingStudents = Student::withSum('fees', 'amount')
-            ->having('fees_sum_amount', '>', 0)
-            ->orderByDesc('fees_sum_amount')
+            ->whereHas('fees')
+            ->orderByRaw('(select sum(fees.amount) from fees where fees.student_id = students.id) desc nulls last')
             ->take(5)
             ->get();
 
