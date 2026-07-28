@@ -20,43 +20,50 @@ class FeeController extends Controller
                 'course' => $f->student->course ?? '-',
                 'amount' => $f->amount,
                 'method' => $f->payment_method ?? 'Manual',
-                'status' => 'N/A', // As per screenshot, Cash is N/A
+                'status' => 'Completed',
                 'reference' => $f->receipt_no ?? '—',
                 'date' => clone $f->payment_date,
                 'created_at' => $f->created_at
             ];
-        })->filter(function($f) {
-            return !in_array(strtolower($f->method), ['mpesa', 'm-pesa', 'm-pesa stk']);
         });
 
-        $mpesaList = \App\Models\MpesaTransaction::with('student')->get()->map(function($m) {
-            $statusText = 'Pending';
-            if ($m->status === 'success') $statusText = 'Completed';
-            if ($m->status === 'failed') $statusText = 'Failed';
-            
-            // Format reference (Checkout ID is long, we can take a substring if we want, but full is fine)
-            $ref = $m->checkout_request_id ? strtoupper(substr($m->checkout_request_id, 0, 10)) : '—';
-            
-            return (object)[
-                'id' => $m->id,
-                'model_type' => 'mpesa',
-                'student' => $m->student,
-                'course' => $m->student->course ?? '-',
-                'amount' => $m->amount,
-                'method' => 'M-Pesa',
-                'status' => $statusText,
-                'reference' => $ref,
-                'date' => clone $m->created_at,
-                'created_at' => $m->created_at
-            ];
-        });
+        // Also get M-Pesa STK transactions that don't have a fee record yet (e.g. pending/failed)
+        $existingFeeReceipts = Fee::whereNotNull('receipt_no')->pluck('receipt_no')->filter()->toArray();
+        $mpesaList = \App\Models\MpesaTransaction::with('student')->get()
+            ->reject(function($m) use ($existingFeeReceipts) {
+                return $m->status === 'success' && $m->receipt_number && in_array($m->receipt_number, $existingFeeReceipts);
+            })
+            ->map(function($m) {
+                $statusText = 'Pending';
+                if ($m->status === 'success') $statusText = 'Completed';
+                if ($m->status === 'failed') $statusText = 'Failed';
+                
+                $ref = $m->receipt_number ?: ($m->checkout_request_id ? strtoupper(substr($m->checkout_request_id, 0, 10)) : '—');
+                
+                return (object)[
+                    'id' => $m->id,
+                    'model_type' => 'mpesa',
+                    'student' => $m->student,
+                    'course' => $m->student->course ?? '-',
+                    'amount' => $m->amount,
+                    'method' => 'M-Pesa STK',
+                    'status' => $statusText,
+                    'reference' => $ref,
+                    'date' => clone $m->created_at,
+                    'created_at' => $m->created_at
+                ];
+            });
 
         $allTransactions = $feesList->concat($mpesaList)->sortByDesc('created_at')->values();
 
         if (request()->filled('method')) {
-            $searchMethod = strtolower(request('method'));
+            $searchMethod = strtolower(trim(request('method')));
             $allTransactions = $allTransactions->filter(function($tx) use ($searchMethod) {
-                return str_contains(strtolower($tx->method), $searchMethod);
+                $m = strtolower(trim($tx->method ?? ''));
+                if ($searchMethod === 'mpesa' || $searchMethod === 'm-pesa') {
+                    return str_contains($m, 'mpesa') || str_contains($m, 'm-pesa') || str_contains($m, 'stk');
+                }
+                return str_contains($m, $searchMethod);
             })->values();
         }
 

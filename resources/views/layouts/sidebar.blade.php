@@ -26,6 +26,11 @@
             </a>
         </li>
         <li class="nav-item mb-2">
+            <a href="{{ route('mpesa.index') }}" class="nav-link {{ request()->routeIs('mpesa.*') ? 'active' : 'text-white' }}">
+                <i class="bi bi-phone me-2"></i> M-Pesa Transactions
+            </a>
+        </li>
+        <li class="nav-item mb-2">
             <a href="{{ route('reports.term-wise-record') }}" class="nav-link {{ request()->routeIs('reports.term-wise-record') ? 'active' : 'text-white' }}">
                 <i class="bi bi-grid-3x3-gap-fill me-2"></i> Term-wise Fee Record
             </a>
