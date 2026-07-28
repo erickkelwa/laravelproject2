@@ -19,9 +19,8 @@ php artisan migrate --force --no-interaction
 # Clear database cache (safe after migrations)
 php artisan cache:clear || true
  
-# Seed essential data
-#php artisan db:seed --class=RolesAndPermissionsSeeder --force --no-interaction
-#php artisan db:seed --class=AdminUserSeeder --force --no-interaction
+# Seed essential data (creates admin user if not exists)
+php artisan db:seed --class=DatabaseSeeder --force --no-interaction
  
 # Cache for performance
 php artisan config:cache
