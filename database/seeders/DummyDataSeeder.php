@@ -18,47 +18,44 @@ class DummyDataSeeder extends Seeder
             Student::create(['name' => 'Alice Johnson', 'email' => 'alice' . rand(1,999) . '@example.com', 'phone' => '555123456', 'course' => 'Software Engineering']);
         }
 
+        // Ensure students have total_fee set
+        Student::all()->each(function ($student) {
+            if (!$student->total_fee || $student->total_fee == 0) {
+                $student->update(['total_fee' => 45000.00]);
+            }
+        });
+
         $studentIds = Student::pluck('id')->toArray();
+        if (empty($studentIds)) return;
 
-        // Create 5 fee records
-        Fee::create([
-            'student_id' => $studentIds[array_rand($studentIds)],
-            'amount' => 15000.00,
-            'payment_method' => 'Mpesa',
-            'receipt_no' => 'MPESA12345',
-            'payment_date' => Carbon::now()->subDays(2)
-        ]);
+        // Seed sample term-wise fee records if none exist
+        if (Fee::count() == 0) {
+            $terms = ['Term 1', 'Term 2', 'Term 3'];
+            $methods = ['Mpesa', 'Bank Transfer', 'Cash', 'Cheque'];
 
-        Fee::create([
-            'student_id' => $studentIds[array_rand($studentIds)],
-            'amount' => 25000.50,
-            'payment_method' => 'Bank Transfer',
-            'receipt_no' => 'BNK98765',
-            'payment_date' => Carbon::today()
-        ]);
+            foreach ($studentIds as $sId) {
+                // Term 1
+                Fee::create([
+                    'student_id'     => $sId,
+                    'term'           => 'Term 1',
+                    'term_fee'       => 15000.00,
+                    'amount'         => 15000.00,
+                    'payment_method' => 'Mpesa',
+                    'receipt_no'     => 'REC-T1-' . rand(1000, 9999),
+                    'payment_date'   => Carbon::now()->subMonths(4),
+                ]);
 
-        Fee::create([
-            'student_id' => $studentIds[array_rand($studentIds)],
-            'amount' => 10000.00,
-            'payment_method' => 'Cash',
-            'receipt_no' => 'CSH001',
-            'payment_date' => Carbon::now()->subDays(5)
-        ]);
-
-        Fee::create([
-            'student_id' => $studentIds[array_rand($studentIds)],
-            'amount' => 30000.00,
-            'payment_method' => 'Mpesa',
-            'receipt_no' => 'MPESA99887',
-            'payment_date' => Carbon::today()
-        ]);
-
-        Fee::create([
-            'student_id' => $studentIds[array_rand($studentIds)],
-            'amount' => 12500.00,
-            'payment_method' => 'Cheque',
-            'receipt_no' => 'CHQ44556',
-            'payment_date' => Carbon::now()->subDays(1)
-        ]);
+                // Term 2
+                Fee::create([
+                    'student_id'     => $sId,
+                    'term'           => 'Term 2',
+                    'term_fee'       => 15000.00,
+                    'amount'         => rand(0, 1) ? 15000.00 : 8000.00,
+                    'payment_method' => 'Bank Transfer',
+                    'receipt_no'     => 'REC-T2-' . rand(1000, 9999),
+                    'payment_date'   => Carbon::now()->subMonths(1),
+                ]);
+            }
+        }
     }
 }

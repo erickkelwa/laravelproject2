@@ -21,5 +21,11 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('password'),
             ]
         );
+
+        // Seed students, courses, and sample fees
+        $this->call([
+            StudentDataSeeder::class,
+            DummyDataSeeder::class,
+        ]);
     }
 }
