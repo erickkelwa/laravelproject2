@@ -22,9 +22,8 @@ php artisan cache:clear || true
 # Seed essential data (creates admin user if not exists)
 php artisan db:seed --class=DatabaseSeeder --force --no-interaction
  
-# Cache for performance
+# Cache for performance (skip route:cache — closure-based routes cannot be cached)
 php artisan config:cache
-php artisan route:cache
 php artisan view:cache
  
 # Storage and permissions
