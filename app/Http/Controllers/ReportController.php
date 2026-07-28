@@ -15,23 +15,26 @@ class ReportController extends Controller
     // Dashboard with Bonus Charts (Monthly Revenue, Revenue by Course, Payment Method)
     public function index()
     {
-        // 1. Monthly Revenue Trend
-        $isPgsql = DB::connection()->getDriverName() === 'pgsql';
-        if ($isPgsql) {
-            $monthlyRevenue = Fee::selectRaw('EXTRACT(YEAR FROM payment_date)::integer as year, EXTRACT(MONTH FROM payment_date)::integer as month, SUM(amount) as total')
-                ->groupBy(DB::raw('EXTRACT(YEAR FROM payment_date), EXTRACT(MONTH FROM payment_date)'))
-                ->orderBy(DB::raw('EXTRACT(YEAR FROM payment_date)'), 'asc')
-                ->orderBy(DB::raw('EXTRACT(MONTH FROM payment_date)'), 'asc')
-                ->take(12)
-                ->get();
-        } else {
-            $monthlyRevenue = Fee::selectRaw('YEAR(payment_date) as year, MONTH(payment_date) as month, SUM(amount) as total')
-                ->groupBy('year', 'month')
-                ->orderBy('year', 'asc')
-                ->orderBy('month', 'asc')
-                ->take(12)
-                ->get();
-        }
+        // 1. Monthly Revenue Trend (Database-agnostic using Eloquent & Carbon)
+        $monthlyRevenue = Fee::whereNotNull('payment_date')
+            ->select('payment_date', 'amount')
+            ->get()
+            ->groupBy(function ($fee) {
+                return $fee->payment_date ? $fee->payment_date->format('Y-m') : now()->format('Y-m');
+            })
+            ->map(function ($group, $key) {
+                [$year, $month] = explode('-', $key);
+                return (object) [
+                    'year'  => (int) $year,
+                    'month' => (int) $month,
+                    'total' => (float) $group->sum('amount'),
+                ];
+            })
+            ->sortBy(function ($item) {
+                return sprintf('%04d-%02d', $item->year, $item->month);
+            })
+            ->take(12)
+            ->values();
         
         // 2. Revenue by Course
         $revenueByCourse = DB::table('fees')
