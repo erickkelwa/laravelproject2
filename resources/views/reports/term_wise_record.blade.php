@@ -94,10 +94,10 @@
         <form action="{{ route('reports.term-wise-record') }}" method="GET" class="row g-3 align-items-end">
             <div class="col-md-6">
                 <label for="student_id" class="form-label fw-bold">Select Student</label>
-                <select name="student_id" id="student_id" class="form-select" required>
+                <select name="student_id" id="student_id" class="form-select" onchange="this.form.submit()" required>
                     <option value="">-- Select a Student --</option>
                     @foreach($students as $s)
-                        <option value="{{ $s->id }}" {{ request('student_id') == $s->id ? 'selected' : '' }}>
+                        <option value="{{ $s->id }}" {{ ($student && $student->id == $s->id) ? 'selected' : '' }}>
                             {{ $s->name }} ({{ $s->course }})
                         </option>
                     @endforeach

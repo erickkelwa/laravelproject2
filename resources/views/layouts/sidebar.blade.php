@@ -25,26 +25,15 @@
                 <i class="bi bi-cash me-2"></i> Add Payment
             </a>
         </li>
-        <!-- Reports Dropdown -->
         <li class="nav-item mb-2">
-            <a href="#reportsMenu" data-bs-toggle="collapse" class="nav-link text-white d-flex align-items-center {{ request()->routeIs('reports.*') ? 'active' : '' }}" aria-expanded="{{ request()->routeIs('reports.*') ? 'true' : 'false' }}">
-                <i class="bi bi-file-earmark-bar-graph me-2"></i> Financial Reports 
-                <i class="bi bi-chevron-down ms-auto" style="font-size: 0.8rem;"></i>
+            <a href="{{ route('reports.term-wise-record') }}" class="nav-link {{ request()->routeIs('reports.term-wise-record') ? 'active' : 'text-white' }}">
+                <i class="bi bi-grid-3x3-gap-fill me-2"></i> Term-wise Fee Record
             </a>
-            <div class="collapse {{ request()->routeIs('reports.*') ? 'show' : '' }}" id="reportsMenu">
-                <ul class="nav flex-column ms-3 mt-1 pb-1">
-                    <li class="nav-item">
-                        <a href="{{ route('reports.index') }}" class="nav-link text-white opacity-75 {{ request()->routeIs('reports.index') ? 'active opacity-100' : '' }}">
-                            <i class="bi bi-grid me-2"></i> Overview Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('reports.term-wise-record') }}" class="nav-link text-white opacity-75 {{ request()->routeIs('reports.term-wise-record') ? 'active opacity-100' : '' }}">
-                            <i class="bi bi-grid-3x3-gap-fill me-2"></i> Term-wise Fee Record
-                        </a>
-                    </li>
-                </ul>
-            </div>
+        </li>
+        <li class="nav-item mb-2">
+            <a href="{{ route('reports.index') }}" class="nav-link {{ request()->routeIs('reports.index') ? 'active' : 'text-white' }}">
+                <i class="bi bi-file-earmark-bar-graph me-2"></i> Financial Reports
+            </a>
         </li>
         
         <!-- Academics Dropdown -->
