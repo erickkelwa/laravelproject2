@@ -6,6 +6,7 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Student Details</h2>
     <div>
+        <a href="{{ route('reports.term-wise-record', ['student_id' => $student->id]) }}" class="btn btn-outline-info me-2"><i class="bi bi-grid-3x3-gap-fill me-1"></i> Term Fee Record</a>
         <a href="{{ route('students.edit', $student) }}" class="btn btn-primary me-2"><i class="bi bi-pencil me-1"></i> Edit</a>
         <a href="{{ route('students.index') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i> Back to List</a>
     </div>
