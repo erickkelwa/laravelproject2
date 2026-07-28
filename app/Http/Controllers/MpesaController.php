@@ -102,8 +102,15 @@ class MpesaController extends Controller
         $timestamp = date('YmdHis');
         $password = base64_encode($this->shortcode . $this->passkey . $timestamp);
 
-        // Generate callback URL using APP_URL to ensure it's the public HTTPS URL (not localhost)
-        $callbackUrl = env('MPESA_CALLBACK_URL', rtrim(env('APP_URL'), '/') . '/mpesa/callback');
+        // Generate callback URL (Safaricom requires a valid public HTTPS URL, not localhost)
+        $callbackUrl = env('MPESA_CALLBACK_URL');
+        if (!$callbackUrl) {
+            $appUrl = rtrim(env('APP_URL', ''), '/');
+            if (empty($appUrl) || str_contains($appUrl, 'localhost') || str_contains($appUrl, '127.0.0.1') || !str_starts_with($appUrl, 'https://')) {
+                $appUrl = 'https://errant-catnap-paparazzi.ngrok-free.dev';
+            }
+            $callbackUrl = $appUrl . '/mpesa/callback';
+        }
 
         $response = Http::withoutVerifying()->withToken($accessToken)->post($url, [
             'BusinessShortCode' => $this->shortcode,
