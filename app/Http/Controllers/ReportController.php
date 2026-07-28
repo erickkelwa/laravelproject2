@@ -208,4 +208,60 @@ class ReportController extends Controller
             
         return view('reports.payment_methods', compact('methods'));
     }
+
+    // REPORT 9: TERM-WISE STUDENT FEE RECORD
+    public function termWiseRecord(Request $request)
+    {
+        $studentId = $request->input('student_id');
+        $student = null;
+        $termData = null;
+        $overall = null;
+
+        if ($studentId) {
+            $student = Student::with('fees')->find($studentId);
+
+            if ($student) {
+                $totalFee = $student->total_fee > 0 ? (float) $student->total_fee : 45000;
+                $defaultTermFee = round($totalFee / 3, 2);
+
+                $terms = ['Term 1', 'Term 2', 'Term 3'];
+                $termData = collect($terms)->map(function ($term) use ($student, $defaultTermFee) {
+                    $termFees = $student->fees->where('term', $term);
+                    $paid = $termFees->sum('amount');
+
+                    // Use term_fee from the first fee record if set, else default
+                    $firstFee = $termFees->first();
+                    $expected = ($firstFee && $firstFee->term_fee > 0)
+                        ? (float) $firstFee->term_fee
+                        : $defaultTermFee;
+
+                    $balance = max(0, $expected - $paid);
+                    $percent = $expected > 0 ? min(100, round(($paid / $expected) * 100)) : 0;
+
+                    $status = $balance <= 0 ? 'cleared'
+                        : ($paid > 0 ? 'partial' : 'unpaid');
+
+                    return (object) [
+                        'term'     => $term,
+                        'expected' => $expected,
+                        'paid'     => $paid,
+                        'balance'  => $balance,
+                        'percent'  => $percent,
+                        'status'   => $status,
+                        'fees'     => $termFees->sortByDesc('payment_date')->values(),
+                    ];
+                });
+
+                $overall = (object) [
+                    'expected' => $termData->sum('expected'),
+                    'paid'     => $termData->sum('paid'),
+                    'balance'  => $termData->sum('balance'),
+                ];
+            }
+        }
+
+        $students = Student::orderBy('name')->get();
+
+        return view('reports.term_wise_record', compact('students', 'student', 'termData', 'overall'));
+    }
 }

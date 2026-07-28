@@ -177,6 +177,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/monthly-collection', [\App\Http\Controllers\ReportController::class, 'monthlyCollection'])->name('monthly-collection');
         Route::get('/mpesa-transactions', [\App\Http\Controllers\ReportController::class, 'mpesaTransactions'])->name('mpesa-transactions');
         Route::get('/payment-methods', [\App\Http\Controllers\ReportController::class, 'paymentMethods'])->name('payment-methods');
+        Route::get('/term-wise-record', [\App\Http\Controllers\ReportController::class, 'termWiseRecord'])->name('term-wise-record');
     });
 
     // Attendance

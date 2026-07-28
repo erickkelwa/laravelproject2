@@ -102,6 +102,13 @@
             <small class="text-muted">Analysis of collection methods</small>
         </a>
     </div>
+    <div class="col-md-3">
+        <a href="{{ route('reports.term-wise-record') }}" class="card report-card p-4">
+            <div class="icon-box bg-primary bg-opacity-10 text-primary"><i class="bi bi-grid-3x3-gap-fill"></i></div>
+            <h6 class="fw-bold mb-1">9. Term-wise Record</h6>
+            <small class="text-muted">Term 1, 2, 3 fee breakdown</small>
+        </a>
+    </div>
 </div>
 
 <h4 class="fw-bold mb-3">Financial Overview</h4>

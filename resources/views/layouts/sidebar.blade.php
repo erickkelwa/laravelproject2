@@ -26,7 +26,7 @@
             </a>
         </li>
         <li class="nav-item mb-2">
-            <a href="{{ route('reports.index') }}" class="nav-link {{ request()->routeIs('reports.index') ? 'active' : 'text-white' }}">
+            <a href="{{ route('reports.index') }}" class="nav-link {{ request()->routeIs('reports.*') ? 'active' : 'text-white' }}">
                 <i class="bi bi-file-earmark-bar-graph me-2"></i> Financial Reports
             </a>
         </li>
