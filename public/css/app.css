@@ -697,6 +697,39 @@ input:where([type='file']):focus {
   outline: 1px solid ButtonText;
   outline: 1px auto -webkit-focus-ring-color;
 }
+.container {
+  width: 100%;
+}
+@media (min-width: 640px) {
+
+  .container {
+    max-width: 640px;
+  }
+}
+@media (min-width: 768px) {
+
+  .container {
+    max-width: 768px;
+  }
+}
+@media (min-width: 1024px) {
+
+  .container {
+    max-width: 1024px;
+  }
+}
+@media (min-width: 1280px) {
+
+  .container {
+    max-width: 1280px;
+  }
+}
+@media (min-width: 1536px) {
+
+  .container {
+    max-width: 1536px;
+  }
+}
 .form-input,.form-textarea,.form-select,.form-multiselect {
   -webkit-appearance: none;
      -moz-appearance: none;
@@ -743,6 +776,9 @@ input:where([type='file']):focus {
   -webkit-print-color-adjust: unset;
           print-color-adjust: unset;
 }
+.visible {
+  visibility: visible;
+}
 .collapse {
   visibility: collapse;
 }
@@ -767,6 +803,12 @@ input:where([type='file']):focus {
 .-top-24 {
   top: -6rem;
 }
+.bottom-0 {
+  bottom: 0px;
+}
+.end-0 {
+  inset-inline-end: 0px;
+}
 .left-0 {
   left: 0px;
 }
@@ -785,13 +827,23 @@ input:where([type='file']):focus {
 .z-50 {
   z-index: 50;
 }
+.float-end {
+  float: inline-end;
+}
+.m-auto {
+  margin: auto;
+}
+.mx-2 {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
 }
-.my-3 {
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 .-ml-px {
   margin-left: -1px;
@@ -816,6 +868,9 @@ input:where([type='file']):focus {
 }
 .mb-4 {
   margin-bottom: 1rem;
+}
+.mb-5 {
+  margin-bottom: 1.25rem;
 }
 .mb-8 {
   margin-bottom: 2rem;
@@ -852,6 +907,12 @@ input:where([type='file']):focus {
 }
 .mr-3 {
   margin-right: 0.75rem;
+}
+.ms-1 {
+  margin-inline-start: 0.25rem;
+}
+.ms-3 {
+  margin-inline-start: 0.75rem;
 }
 .ms-auto {
   margin-inline-start: auto;
@@ -958,6 +1019,9 @@ input:where([type='file']):focus {
 .w-full {
   width: 100%;
 }
+.max-w-2xl {
+  max-width: 42rem;
+}
 .max-w-4xl {
   max-width: 56rem;
 }
@@ -967,17 +1031,20 @@ input:where([type='file']):focus {
 .max-w-7xl {
   max-width: 80rem;
 }
-.max-w-xl {
-  max-width: 36rem;
-}
 .flex-1 {
   flex: 1 1 0%;
+}
+.flex-shrink {
+  flex-shrink: 1;
 }
 .flex-shrink-0 {
   flex-shrink: 0;
 }
 .shrink-0 {
   flex-shrink: 0;
+}
+.border-collapse {
+  border-collapse: collapse;
 }
 .origin-top {
   transform-origin: top;
@@ -1016,6 +1083,9 @@ input:where([type='file']):focus {
 .flex-col {
   flex-direction: column;
 }
+.flex-wrap {
+  flex-wrap: wrap;
+}
 .items-center {
   align-items: center;
 }
@@ -1028,8 +1098,14 @@ input:where([type='file']):focus {
 .justify-between {
   justify-content: space-between;
 }
+.gap-1 {
+  gap: 0.25rem;
+}
 .gap-2 {
   gap: 0.5rem;
+}
+.gap-3 {
+  gap: 0.75rem;
 }
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
@@ -1051,8 +1127,14 @@ input:where([type='file']):focus {
   margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
 }
+.overflow-auto {
+  overflow: auto;
+}
 .overflow-hidden {
   overflow: hidden;
+}
+.text-wrap {
+  text-wrap: wrap;
 }
 .rounded {
   border-radius: 0.25rem;
@@ -1086,6 +1168,9 @@ input:where([type='file']):focus {
 .border-0 {
   border-width: 0px;
 }
+.border-2 {
+  border-width: 2px;
+}
 .border-4 {
   border-width: 4px;
 }
@@ -1097,9 +1182,6 @@ input:where([type='file']):focus {
 }
 .border-l-4 {
   border-left-width: 4px;
-}
-.border-r {
-  border-right-width: 1px;
 }
 .border-t {
   border-top-width: 1px;
@@ -1116,10 +1198,6 @@ input:where([type='file']):focus {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));
 }
-.border-gray-400 {
-  --tw-border-opacity: 1;
-  border-color: rgb(156 163 175 / var(--tw-border-opacity, 1));
-}
 .border-indigo-400 {
   --tw-border-opacity: 1;
   border-color: rgb(129 140 248 / var(--tw-border-opacity, 1));
@@ -1130,6 +1208,9 @@ input:where([type='file']):focus {
 .border-white {
   --tw-border-opacity: 1;
   border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
+}
+.border-opacity-25 {
+  --tw-border-opacity: 0.25;
 }
 .border-opacity-30 {
   --tw-border-opacity: 0.3;
@@ -1166,15 +1247,24 @@ input:where([type='file']):focus {
   --tw-bg-opacity: 1;
   background-color: rgb(254 242 242 / var(--tw-bg-opacity, 1));
 }
+.bg-transparent {
+  background-color: transparent;
+}
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.bg-opacity-10 {
+  --tw-bg-opacity: 0.1;
 }
 .bg-opacity-20 {
   --tw-bg-opacity: 0.2;
 }
 .bg-opacity-40 {
   --tw-bg-opacity: 0.4;
+}
+.bg-opacity-75 {
+  --tw-bg-opacity: 0.75;
 }
 .bg-opacity-80 {
   --tw-bg-opacity: 0.8;
@@ -1200,6 +1290,9 @@ input:where([type='file']):focus {
 .p-0 {
   padding: 0px;
 }
+.p-1 {
+  padding: 0.25rem;
+}
 .p-2 {
   padding: 0.5rem;
 }
@@ -1208,6 +1301,9 @@ input:where([type='file']):focus {
 }
 .p-4 {
   padding: 1rem;
+}
+.p-5 {
+  padding: 1.25rem;
 }
 .p-6 {
   padding: 1.5rem;
@@ -1231,9 +1327,17 @@ input:where([type='file']):focus {
   padding-left: 1rem;
   padding-right: 1rem;
 }
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
 .px-6 {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+}
+.py-0 {
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 .py-1 {
   padding-top: 0.25rem;
@@ -1263,11 +1367,20 @@ input:where([type='file']):focus {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
 }
+.pb-0 {
+  padding-bottom: 0px;
+}
 .pb-1 {
   padding-bottom: 0.25rem;
 }
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
 .pb-3 {
   padding-bottom: 0.75rem;
+}
+.pe-3 {
+  padding-inline-end: 0.75rem;
 }
 .pe-4 {
   padding-inline-end: 1rem;
@@ -1292,6 +1405,9 @@ input:where([type='file']):focus {
 }
 .pt-4 {
   padding-top: 1rem;
+}
+.pt-5 {
+  padding-top: 1.25rem;
 }
 .pt-6 {
   padding-top: 1.5rem;
@@ -1429,6 +1545,9 @@ input:where([type='file']):focus {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
+.text-opacity-75 {
+  --tw-text-opacity: 0.75;
+}
 .underline {
   text-decoration-line: underline;
 }
@@ -1450,8 +1569,14 @@ input:where([type='file']):focus {
 .opacity-100 {
   opacity: 1;
 }
+.opacity-50 {
+  opacity: 0.5;
+}
 .opacity-70 {
   opacity: 0.7;
+}
+.opacity-75 {
+  opacity: 0.75;
 }
 .mix-blend-multiply {
   mix-blend-mode: multiply;
